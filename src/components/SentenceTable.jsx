@@ -1,5 +1,4 @@
 import SpeakerButton from './SpeakerButton';
-import { isGerman } from '../utils/detectGerman';
 
 /**
  * ExcelTable – renders the full Excel sheet as a table.
@@ -95,7 +94,8 @@ export default function SentenceTable({ sheets }) {
                       </td>
 
                       {row.map((cell, colIdx) => {
-                        const cellIsGerman = cell.length > 0 && isGerman(cell);
+                        // The third column (index 2) contains German text
+                        const isGermanColumn = colIdx === 2 && cell.length > 0;
 
                         return (
                           <td
@@ -103,14 +103,14 @@ export default function SentenceTable({ sheets }) {
                             className={`px-4 py-3 text-sm leading-relaxed ${
                               isSectionHeader
                                 ? 'font-semibold text-primary-200'
-                                : cellIsGerman
+                                : isGermanColumn
                                   ? 'text-surface-100'
                                   : 'text-surface-400'
                             }`}
                           >
                             <div className="flex items-center gap-2">
                               <span className="flex-1 min-w-0">{cell}</span>
-                              {cellIsGerman && (
+                              {isGermanColumn && (
                                 <div className="flex-shrink-0">
                                   <SpeakerButton sentence={cell} />
                                 </div>
